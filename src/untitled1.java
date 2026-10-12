@@ -1,0 +1,115 @@
+import java.util.Scanner;
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+import java.util.Collections;
+
+public class untitled1 {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Array, Stack, and Queue Reversal");
+        System.out.println("--------------------------------");
+
+        System.out.print("How many values would you like to enter? ");
+        int size = input.nextInt();
+
+        if (size < 0) {
+            System.out.println("Please enter a non-negative number.");
+            input.close();
+            return;
+        }
+
+        int[] numbers = new int[size];
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Read input and store each value in all three collections.
+        for (int i = 0; i < size; i++) {
+            System.out.print("Enter value " + (i + 1) + ": ");
+            int value = input.nextInt();
+
+            numbers[i] = value;
+            stack.push(value);
+            queue.offer(value);
+        }
+
+        // Display the original collections.
+        System.out.println("\nOriginal Collections:");
+
+        System.out.print("The values in the Array are now: ");
+        printArray(numbers);
+
+        System.out.print("The values in the Stack collection are now: ");
+        printCollection(stack);
+
+        System.out.print("The values in the Queue collection are now: ");
+        printCollection(queue);
+
+        // Reverse the actual array elements by swapping.
+        for (int i = 0; i < numbers.length / 2; i++) {
+            int temp = numbers[i];
+            numbers[i] = numbers[numbers.length - 1 - i];
+            numbers[numbers.length - 1 - i] = temp;
+        }
+
+        // Reverse the stack.
+        Collections.reverse(stack);
+
+        // Reverse the queue using a stack as temporary storage.
+        Stack<Integer> temporaryStack = new Stack<>();
+
+        while (!queue.isEmpty()) {
+            temporaryStack.push(queue.poll());
+        }
+
+        while (!temporaryStack.isEmpty()) {
+            queue.offer(temporaryStack.pop());
+        }
+
+        // Display the reversed collections.
+        System.out.println("\nReversed Collections:");
+
+        System.out.print("The reversed values in the Array are now: ");
+        printArray(numbers);
+
+        System.out.print(
+                "The reversed values in the Stack collection are now: ");
+        printCollection(stack);
+
+        System.out.print(
+                "The reversed values in the Queue collection are now: ");
+        printCollection(queue);
+
+        input.close();
+    }
+
+    // Prints an integer array in order.
+    public static void printArray(int[] numbers) {
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.print(numbers[i]);
+
+            if (i < numbers.length - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
+    }
+
+    // Prints a collection in its iteration order.
+    public static void printCollection(
+            Iterable<Integer> collection) {
+        boolean first = true;
+
+        for (int value : collection) {
+            if (!first) {
+                System.out.print(", ");
+            }
+
+            System.out.print(value);
+            first = false;
+        }
+
+        System.out.println();
+    }
+}
